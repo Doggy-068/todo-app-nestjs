@@ -7,6 +7,7 @@ import { Auth } from './entity/auth.entity'
 import { AuthGuard } from './module/auth/auth.guard'
 import { APP_GUARD } from '@nestjs/core'
 import { FileModule } from './module/file/file.module'
+import { WsModule } from './module/ws/ws.module'
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { FileModule } from './module/file/file.module'
     }),
     AuthModule,
     TodoModule,
-    FileModule
+    FileModule,
+    WsModule
   ],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard }
