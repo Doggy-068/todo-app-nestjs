@@ -31,7 +31,7 @@ export class TodoController {
     return this.todoService.findAll({ size: Number(size), index: Number(index), title, date, content, order, direction })
   }
 
-  @Post()
+  @Post('')
   @ApiOperation({ summary: 'Create a new record.' })
   @ApiCreatedResponse({ description: 'The record has been successfully created.', type: TodoReturnDto })
   async postTodo(@Body() todoCreateDto: TodoCreateDto): Promise<TodoReturnDto> {
