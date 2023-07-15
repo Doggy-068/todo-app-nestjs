@@ -16,6 +16,7 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document)
   app.enableCors()
   app.useStaticAssets('./.file', { prefix: '/.file' })
+  app.useStaticAssets('./web', { prefix: '/web' })
   await app.listen(3000)
 }
 bootstrap()

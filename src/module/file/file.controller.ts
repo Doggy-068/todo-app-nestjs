@@ -5,7 +5,7 @@ import { FileUploadDto, FileReturnDto } from './dto/file.dto'
 
 @ApiBearerAuth()
 @ApiTags('File')
-@Controller('file')
+@Controller('api/file')
 export class FileController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))

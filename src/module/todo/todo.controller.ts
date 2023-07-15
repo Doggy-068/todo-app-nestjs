@@ -1,17 +1,17 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Sse, MessageEvent } from '@nestjs/common'
 import { TodoService } from './todo.service'
 import { TodoReturnDto, TodoCreateDto, TodoModifyDto } from './dto/todo.dto'
-import { ApiTags, ApiCreatedResponse, ApiQuery, ApiOkResponse, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
+import { ApiTags, ApiCreatedResponse, ApiQuery, ApiOkResponse, ApiOperation, ApiBearerAuth, ApiExcludeEndpoint } from '@nestjs/swagger'
 import { interval, map, Observable } from 'rxjs'
 
 @ApiBearerAuth()
 @ApiTags('Todos')
-@Controller('todos')
+@Controller('api/todos')
 export class TodoController {
   constructor(private todoService: TodoService) { }
 
   @Sse('sse')
-  @ApiOperation({ summary: 'Get records one by one, server-sent events!' })
+  @ApiExcludeEndpoint()
   async getRecordsOneByOne(): Promise<Observable<MessageEvent>> {
     const data = await this.todoService.findAll({})
     return interval(5000).pipe(map((i) => ({ data: data[i] })))
