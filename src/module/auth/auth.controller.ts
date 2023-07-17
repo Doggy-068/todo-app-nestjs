@@ -1,4 +1,4 @@
-import { Controller, Get, Query, NotFoundException } from "@nestjs/common"
+import { Controller, Get, Query, NotFoundException } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { AuthReturnDto } from './dto/auth.dto'
