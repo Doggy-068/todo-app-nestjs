@@ -4,6 +4,7 @@ import { AuthService } from './auth.service'
 import { Auth } from '../../entity/auth.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { JwtService } from '@nestjs/jwt'
+import { NotFoundException } from '@nestjs/common'
 
 describe('AuthController', () => {
   let controller: AuthController
@@ -37,6 +38,10 @@ describe('AuthController', () => {
   describe('login', () => {
     it('should return an access_token', async () => {
       expect(await controller.login('admin', '123456')).toStrictEqual({ 'access_token': 'thisisaadmintoken' })
+    })
+
+    it('should throw an exceptipn', async () => {
+      await expect(controller.login('admin', '123')).rejects.toThrow(NotFoundException)
     })
   })
 })
