@@ -5,9 +5,9 @@ export class Auth {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ unique: true })
   account: string
 
-  @Column()
+  @Column({ nullable: false })
   password: string
 }

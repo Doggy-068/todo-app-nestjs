@@ -5,12 +5,12 @@ export class Todo {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ nullable: false })
   title: string
 
-  @Column()
+  @Column({ nullable: false })
   date: string
 
-  @Column()
+  @Column({ nullable: false })
   content: string
 }

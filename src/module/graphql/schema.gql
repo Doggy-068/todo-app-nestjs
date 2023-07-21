@@ -1,0 +1,21 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Press {
+  id: Int!
+  name: String!
+  books: [Book]!
+}
+
+type Book {
+  id: Int!
+  isbn: String!
+  name: String!
+  press: Press!
+}
+
+type Query {
+  book(id: Int!): Book!
+  press(id: Int!): Press!
+}
