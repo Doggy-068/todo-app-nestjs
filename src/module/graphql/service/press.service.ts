@@ -8,10 +8,10 @@ export class PressService {
   constructor(@InjectRepository(Press) private pressRepository: Repository<Press>) { }
 
   async findById(id: number) {
-    return this.pressRepository.findOneBy({ id })
+    return await this.pressRepository.findOneBy({ id })
   }
 
   async findByBookId(bookId: number) {
-    return this.pressRepository.findOne({ relations: ['books'], where: { books: { id: bookId } } })
+    return await this.pressRepository.findOne({ relations: ['books'], where: { books: { id: bookId } } })
   }
 }

@@ -28,34 +28,34 @@ export class TodoController {
   @ApiQuery({ name: 'direction', enum: ['asc', 'desc'], required: false })
   @ApiOkResponse({ description: 'Find records successfully.', type: [TodoReturnDto] })
   async getTodos(@Query('size') size: string, @Query('index') index: string, @Query('title') title: string, @Query('date') date: string, @Query('content') content: string, @Query('order') order: string, @Query('direction') direction: string): Promise<TodoReturnDto[]> {
-    return this.todoService.findAll({ size: Number(size), index: Number(index), title, date, content, order, direction })
+    return await this.todoService.findAll({ size: Number(size), index: Number(index), title, date, content, order, direction })
   }
 
   @Post('')
   @ApiOperation({ summary: 'Create a new record.' })
   @ApiCreatedResponse({ description: 'The record has been successfully created.', type: TodoReturnDto })
   async postTodo(@Body() todoCreateDto: TodoCreateDto): Promise<TodoReturnDto> {
-    return this.todoService.createOne(todoCreateDto)
+    return await this.todoService.createOne(todoCreateDto)
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find a record by id.' })
   @ApiOkResponse({ description: 'Find a record successfully.', type: TodoReturnDto })
   async getTodoById(@Param('id') id: string): Promise<TodoReturnDto> {
-    return this.todoService.findOneById(Number(id))
+    return await this.todoService.findOneById(Number(id))
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Find a record by id and modify it.' })
   @ApiOkResponse({ description: 'Modify a record successfully.', type: TodoReturnDto })
   async patchTodoById(@Param('id') id: string, @Body() todoModifyDto: TodoModifyDto): Promise<TodoReturnDto> {
-    return this.todoService.modifyOneById(Number(id), todoModifyDto)
+    return await this.todoService.modifyOneById(Number(id), todoModifyDto)
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Find a record by id and delete it.' })
   @ApiOkResponse({ description: 'Delete a record successfully.', type: TodoReturnDto })
   async deleteTodoById(@Param('id') id: string): Promise<TodoReturnDto> {
-    return this.todoService.deleteOneById(Number(id))
+    return await this.todoService.deleteOneById(Number(id))
   }
 }

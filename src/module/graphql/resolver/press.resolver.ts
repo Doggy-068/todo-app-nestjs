@@ -14,11 +14,11 @@ export class PressResolver {
 
   @Query(returns => Press)
   async press(@Args('id', { type: () => Int }) id: number) {
-    return this.pressService.findById(id)
+    return await this.pressService.findById(id)
   }
 
   @ResolveField()
   async books(@Parent() press: Press) {
-    return this.bookService.findByPressId(press.id)
+    return await this.bookService.findByPressId(press.id)
   }
 }

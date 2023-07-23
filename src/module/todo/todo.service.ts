@@ -35,7 +35,11 @@ export class TodoService {
   }
 
   async findOneById(id: number): Promise<Todo> {
-    return this.todoRepository.findOneBy({ id })
+    const result = await this.todoRepository.findOneBy({ id })
+    if (result === null) {
+      throw new NotFoundException()
+    }
+    return result
   }
 
   async createOne(todoCreateDto: TodoCreateDto): Promise<Todo> {
@@ -51,7 +55,7 @@ export class TodoService {
   async modifyOneById(id: number, todoModifyDto: TodoModifyDto) {
     if (await this.findOneById(id)) {
       await this.todoRepository.update({ id }, todoModifyDto)
-      return this.findOneById(id)
+      return await this.findOneById(id)
     }
     throw new NotFoundException()
   }
@@ -59,7 +63,7 @@ export class TodoService {
   async deleteOneById(id: number): Promise<Todo> {
     const entity = await this.findOneById(id)
     if (entity) {
-      this.todoRepository.delete({ id })
+      await this.todoRepository.delete({ id })
       return entity
     }
     throw new NotFoundException()

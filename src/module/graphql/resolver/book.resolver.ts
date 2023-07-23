@@ -14,11 +14,11 @@ export class BookResolver {
 
   @Query(returns => Book)
   async book(@Args('id', { type: () => Int }) id: number) {
-    return this.bookService.findById(id)
+    return await this.bookService.findById(id)
   }
 
   @ResolveField()
   async press(@Parent() book: Book) {
-    return this.pressService.findByBookId(book.id)
+    return await this.pressService.findByBookId(book.id)
   }
 }
