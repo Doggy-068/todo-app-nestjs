@@ -14,4 +14,10 @@ export class PressService {
   async findByBookId(bookId: number) {
     return await this.pressRepository.findOne({ relations: ['books'], where: { books: { id: bookId } } })
   }
+
+  async create(name: string) {
+    const entity = this.pressRepository.create({ name })
+    await this.pressRepository.insert(entity)
+    return entity
+  }
 }

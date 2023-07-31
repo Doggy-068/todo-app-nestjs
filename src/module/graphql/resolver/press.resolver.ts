@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Int, ResolveField, Parent } from '@nestjs/graphql'
+import { Resolver, Query, Args, Int, ResolveField, Parent, Mutation } from '@nestjs/graphql'
 import { Press } from '../model/press.model'
 import { BookService } from '../service/book.service'
 import { PressService } from '../service/press.service'
@@ -20,5 +20,10 @@ export class PressResolver {
   @ResolveField()
   async books(@Parent() press: Press) {
     return await this.bookService.findByPressId(press.id)
+  }
+
+  @Mutation(returns => Press)
+  async createPress(@Args('name') name: string) {
+    return await this.pressService.create(name)
   }
 }
