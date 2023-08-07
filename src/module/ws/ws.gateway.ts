@@ -1,8 +1,8 @@
 import { UseGuards } from '@nestjs/common'
-import { WsGuard } from './ws.guard'
+import { AuthGuard } from '../auth/auth.guard'
 import { WebSocketGateway, SubscribeMessage, MessageBody, WsResponse } from '@nestjs/websockets'
 
-@UseGuards(WsGuard)
+@UseGuards(AuthGuard)
 @WebSocketGateway({ cors: { origin: '*' } })
 export class WsGateway {
   @SubscribeMessage('fetch')

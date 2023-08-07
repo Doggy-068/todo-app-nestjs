@@ -2,9 +2,7 @@ import { Resolver, Query, Args, Int, ResolveField, Parent, Mutation } from '@nes
 import { Press } from '../model/press.model'
 import { BookService } from '../service/book.service'
 import { PressService } from '../service/press.service'
-import { Public } from '../../../decorator/public.decorator'
 
-@Public()
 @Resolver(of => Press)
 export class PressResolver {
   constructor(
