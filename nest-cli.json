@@ -1,8 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
+  "monorepo": true,
   "sourceRoot": "src",
-  "compilerOptions": {
-    "deleteOutDir": true
+  "projects": {
+    "rabbitmq-app": {
+      "type": "application",
+      "root": "microservice/rabbitmq",
+      "entryFile": "main",
+      "sourceRoot": "microservice/rabbitmq",
+      "compilerOptions": {
+        "tsConfigPath": "tsconfig.build.json"
+      }
+    }
   }
 }
