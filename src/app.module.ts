@@ -11,19 +11,22 @@ import { APP_GUARD } from '@nestjs/core'
 import { FileModule } from './module/file/file.module'
 import { WsModule } from './module/ws/ws.module'
 import { GraphqlModule } from './module/graphql/graphql.module'
+import { RabbitmqModule } from './module/rabbitmq/rabbitmq.module'
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: './.database/todo_app.db',
-      entities: [Auth, Todo, Press, Book]
+      entities: [Auth, Todo, Press, Book],
+      synchronize: true
     }),
     AuthModule,
     TodoModule,
     FileModule,
     WsModule,
-    GraphqlModule
+    GraphqlModule,
+    RabbitmqModule
   ],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard }
