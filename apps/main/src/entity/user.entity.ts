@@ -1,22 +1,28 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn } from 'typeorm'
 import { RoleEntity } from './role.entity'
 import { MessageEntity } from './message.entity'
+import { MailboxFolderEntity } from './mailbox.folder.entity'
+import { MailEntity } from './mail.entity'
 
-@Entity()
+@Entity({ name: 'USER' })
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string
 
-  @Column({ nullable: false, unique: true })
+  @Column({ name: 'username', nullable: false, unique: true })
   username: string
 
-  @Column({ nullable: false })
+  @Column({ name: 'password', nullable: false })
   password: string
 
-  @Column({ nullable: false })
+  @Column({ name: 'nickname', nullable: false })
   nickname: string
 
+  @Column({ name: 'mailbox', nullable: false, unique: true })
+  mailbox: string
+
   @ManyToOne(type => RoleEntity, role => role.users)
+  @JoinColumn({ name: 'role_id', referencedColumnName: 'id' })
   role: RoleEntity
 
   @OneToMany(type => MessageEntity, message => message.sender)
@@ -24,4 +30,10 @@ export class UserEntity {
 
   @OneToMany(type => MessageEntity, message => message.recipient)
   receiveMessages: MessageEntity[]
+
+  @OneToMany(type => MailboxFolderEntity, mailboxFolder => mailboxFolder.user)
+  customMailboxFolders: MailboxFolderEntity[]
+
+  @OneToMany(type => MailEntity, mail => mail.user)
+  mails: MailEntity[]
 }

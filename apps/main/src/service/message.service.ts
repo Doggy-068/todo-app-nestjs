@@ -8,10 +8,9 @@ import { UserEntity } from '../entity/user.entity'
 export class MessageService {
   constructor(@InjectRepository(MessageEntity) private messageRepository: Repository<MessageEntity>) { }
 
-  async insertMessage(data: Partial<MessageEntity>) {
+  async insertMessage(data: Pick<MessageEntity, 'content' | 'sender' | 'recipient'>) {
     const entity = this.messageRepository.create({
       content: data.content,
-      date: data.date,
       sender: data.sender,
       recipient: data.recipient
     })
@@ -22,9 +21,9 @@ export class MessageService {
   selectLastMessage(userId: string, contactId: string) {
     return this.messageRepository
       .createQueryBuilder('message')
-      .leftJoinAndMapOne('message.sender', UserEntity, 'sender', 'sender.id = senderId')
-      .leftJoinAndMapOne('message.recipient', UserEntity, 'recipient', 'recipient.id = recipientId')
-      .where('(senderId = :userId and recipientId = :contactId) or (senderId = :contactId and recipientId = :userId)', { userId, contactId })
+      .leftJoinAndMapOne('message.sender', UserEntity, 'sender', 'sender.id = sender_id')
+      .leftJoinAndMapOne('message.recipient', UserEntity, 'recipient', 'recipient.id = recipient_id')
+      .where('(sender_id = :userId and recipient_id = :contactId) or (sender_id = :contactId and recipient_id = :userId)', { userId, contactId })
       .orderBy('date', 'DESC')
       .getOne()
   }
@@ -32,9 +31,9 @@ export class MessageService {
   selectMessages(userId: string, contactId: string) {
     return this.messageRepository
       .createQueryBuilder('message')
-      .leftJoinAndMapOne('message.sender', UserEntity, 'sender', 'sender.id = senderId')
-      .leftJoinAndMapOne('message.recipient', UserEntity, 'recipient', 'recipient.id = recipientId')
-      .where('(senderId = :userId and recipientId = :contactId) or (senderId = :contactId and recipientId = :userId)', { userId, contactId })
+      .leftJoinAndMapOne('message.sender', UserEntity, 'sender', 'sender.id = sender_id')
+      .leftJoinAndMapOne('message.recipient', UserEntity, 'recipient', 'recipient.id = recipient_id')
+      .where('(sender_id = :userId and recipient_id = :contactId) or (sender_id = :contactId and recipient_id = :userId)', { userId, contactId })
       .orderBy('date', 'ASC')
       .getMany()
   }

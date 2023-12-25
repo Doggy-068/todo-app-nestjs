@@ -13,7 +13,7 @@ export class AuthService {
    * @description 验证用户名和密码并根据 ID 生成 JWT Token
    */
   async signIn(username: string, password: string) {
-    const user = await this.userService.selectOneUser({ username, password })
+    const user = await this.userService.selectUser({ username, password })
     if (user === null) {
       throw new UnauthorizedException()
     }

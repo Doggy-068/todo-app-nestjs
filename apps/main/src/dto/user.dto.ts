@@ -6,4 +6,7 @@ export class UserReturnDto {
 
   @ApiProperty()
   nickname: string
+
+  @ApiProperty()
+  mailbox: string
 }

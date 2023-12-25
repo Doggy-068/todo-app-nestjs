@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { UserReturnDto } from './user.dto'
 
-export class SendMessageDto {
+class MessageUserReturnDto {
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  nickname: string
+}
+
+export class MessageSendDto {
   @ApiProperty({ nullable: false })
   content: string
 
@@ -19,24 +26,24 @@ export class MessageReturnDto {
   @ApiProperty()
   date: string
 
-  @ApiProperty({ type: () => UserReturnDto })
-  sender: UserReturnDto
+  @ApiProperty({ type: () => MessageUserReturnDto })
+  sender: MessageUserReturnDto
 
-  @ApiProperty({ type: () => UserReturnDto })
-  recipient: UserReturnDto
+  @ApiProperty({ type: () => MessageUserReturnDto })
+  recipient: MessageUserReturnDto
 }
 
-export class LastMessageReturnDto {
-  @ApiProperty({ type: () => UserReturnDto })
-  contact: UserReturnDto
+export class MessageLastReturnDto {
+  @ApiProperty({ type: () => MessageUserReturnDto })
+  contact: MessageUserReturnDto
 
   @ApiProperty({ type: () => MessageReturnDto })
   message: MessageReturnDto
 }
 
 export class MessageListReturnDto {
-  @ApiProperty({ type: () => UserReturnDto })
-  contact: UserReturnDto
+  @ApiProperty({ type: () => MessageUserReturnDto })
+  contact: MessageUserReturnDto
 
   @ApiProperty({ type: () => [MessageReturnDto] })
   messages: MessageReturnDto[]

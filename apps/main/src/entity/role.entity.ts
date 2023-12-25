@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
 import { UserEntity } from './user.entity'
 
-@Entity()
+@Entity({ name: 'ROLE' })
 export class RoleEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string
 
-  @Column({ enum: ['root', 'admin', 'user'] })
+  @Column({ name: 'name', enum: ['root', 'admin', 'user'], nullable: false })
   name: string
 
   @OneToMany(type => UserEntity, user => user.role)

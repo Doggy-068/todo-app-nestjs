@@ -3,7 +3,7 @@ import { UserService } from '../service/user.service'
 import { MessageService } from '../service/message.service'
 import { ContactService } from '../service/contact.service'
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { SendMessageDto, MessageReturnDto, LastMessageReturnDto, MessageListReturnDto } from '../dto/message.dto'
+import { MessageSendDto, MessageReturnDto, MessageLastReturnDto, MessageListReturnDto } from '../dto/message.dto'
 
 @ApiTags('Message')
 @ApiBearerAuth()
@@ -22,13 +22,12 @@ export class MessageController {
     type: MessageReturnDto
   })
   @Post('send')
-  async sendMessage(@Request() request, @Body() sendMessageDto: SendMessageDto): Promise<MessageReturnDto> {
+  async sendMessage(@Request() request, @Body() sendMessageDto: MessageSendDto): Promise<MessageReturnDto> {
     const senderId = request['user'].id
-    const sender = await this.userService.selectOneUser({ id: senderId })
-    const recipient = await this.userService.selectOneUser({ id: sendMessageDto.recipientId })
+    const sender = await this.userService.selectUser({ id: senderId })
+    const recipient = await this.userService.selectUser({ id: sendMessageDto.recipientId })
     const entity = await this.messageService.insertMessage({
       content: sendMessageDto.content,
-      date: new Date(),
       sender,
       recipient
     })
@@ -52,18 +51,21 @@ export class MessageController {
     summary: '获取最后消息列表'
   })
   @ApiOkResponse({
-    type: [LastMessageReturnDto]
+    type: [MessageLastReturnDto]
   })
-  async getLastMessageList(@Request() request): Promise<LastMessageReturnDto[]> {
+  async getLastMessageList(@Request() request): Promise<MessageLastReturnDto[]> {
     const userId = request['user'].id
     const contacts = await this.contactService.selectContacts(userId)
     return (await Promise.all(contacts.map(async (contact) => {
       const message = await this.messageService.selectLastMessage(userId, contact.id)
       return message === null ? null : {
-        contactId: contact.id,
-        contact,
+        contact: {
+          id: contact.id,
+          nickname: contact.nickname
+        },
         message: {
-          ...message,
+          id: message.id,
+          content: message.content,
           date: message.date.toISOString(),
           sender: {
             id: message.sender.id,
@@ -87,7 +89,7 @@ export class MessageController {
   @Get('list')
   async getMessageList(@Request() request, @Query('contactId') contactId: string): Promise<MessageListReturnDto> {
     const userId = request['user'].id
-    const contact = await this.userService.selectOneUser({ id: contactId })
+    const contact = await this.userService.selectUser({ id: contactId })
     if (contact === null) {
       throw new NotFoundException()
     }
@@ -98,7 +100,8 @@ export class MessageController {
       },
       messages: (await this.messageService.selectMessages(userId, contactId)).map(message => {
         return {
-          ...message,
+          id: message.id,
+          content: message.content,
           date: message.date.toISOString(),
           sender: {
             id: message.sender.id,
