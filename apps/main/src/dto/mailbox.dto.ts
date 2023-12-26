@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator'
 
 class MailboxUserReturnDto {
   @ApiProperty()
@@ -29,18 +30,29 @@ export class MailboxFoldersReturnDto {
 
 export class MailboxSaveDraftDto {
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   title: string
 
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   content: string
 
   @ApiProperty()
+  @IsArray()
+  @IsEmail(undefined, { each: true })
   recipientMailboxes: string[]
 
   @ApiProperty()
+  @IsArray()
+  @IsEmail(undefined, { each: true })
   carbonCopies: string[]
 
   @ApiProperty()
+  @IsArray()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
   annexes: string[]
 }
 

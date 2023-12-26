@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './module/app.module'
+import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { version } from '../../../package.json'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  app.useGlobalPipes(new ValidationPipe())
   app.enableCors()
   const config = new DocumentBuilder()
     .setTitle('Todo-App-Nestjs')
