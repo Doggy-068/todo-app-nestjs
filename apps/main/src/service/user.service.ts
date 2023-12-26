@@ -7,7 +7,7 @@ import { UserEntity } from '../entity/user.entity'
 export class UserService {
   constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) { }
 
-  selectUser(data: Partial<UserEntity>) {
+  selectUser(data: { id?: string, username?: string, password?: string }) {
     return this.userRepository.findOneBy(data)
   }
 }

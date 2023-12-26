@@ -6,7 +6,7 @@ export class RoleEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string
 
-  @Column({ name: 'name', enum: ['root', 'admin', 'user'], nullable: false })
+  @Column({ name: 'name', nullable: false, unique: true })
   name: string
 
   @OneToMany(type => UserEntity, user => user.role)

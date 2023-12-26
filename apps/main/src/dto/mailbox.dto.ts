@@ -29,9 +29,6 @@ export class MailboxFoldersReturnDto {
 
 export class MailboxSaveDraftDto {
   @ApiProperty()
-  id: string
-
-  @ApiProperty()
   title: string
 
   @ApiProperty()
@@ -45,4 +42,44 @@ export class MailboxSaveDraftDto {
 
   @ApiProperty()
   annexes: string[]
+}
+
+class MailBoxMailFileMetaReturn {
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  url: string
+
+  @ApiProperty()
+  filename: string
+
+  @ApiProperty()
+  size: number
+}
+
+export class MailboxMailReturn {
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  date: string
+
+  @ApiProperty()
+  title: string
+
+  @ApiProperty()
+  content: string
+
+  @ApiProperty()
+  senderMailbox: string
+
+  @ApiProperty()
+  recipientMailboxes: string[]
+
+  @ApiProperty()
+  carbonCopies: string[]
+
+  @ApiProperty({ type: () => [MailBoxMailFileMetaReturn] })
+  annexes: MailBoxMailFileMetaReturn[]
 }

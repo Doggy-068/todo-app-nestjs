@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColum
 import { RoleEntity } from './role.entity'
 import { MessageEntity } from './message.entity'
 import { MailboxFolderEntity } from './mailbox.folder.entity'
-import { MailEntity } from './mail.entity'
+import { MailboxMailEntity } from './mailbox.mail.entity'
 
 @Entity({ name: 'USER' })
 export class UserEntity {
@@ -34,6 +34,6 @@ export class UserEntity {
   @OneToMany(type => MailboxFolderEntity, mailboxFolder => mailboxFolder.user)
   customMailboxFolders: MailboxFolderEntity[]
 
-  @OneToMany(type => MailEntity, mail => mail.user)
-  mails: MailEntity[]
+  @OneToMany(type => MailboxMailEntity, mail => mail.user)
+  mails: MailboxMailEntity[]
 }

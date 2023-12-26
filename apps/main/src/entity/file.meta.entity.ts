@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { MailEntity } from './mail.entity'
+import { MailboxMailEntity } from './mailbox.mail.entity'
 
 @Entity({ name: 'FILE_META' })
 export class FileMeTaEntity {
@@ -15,6 +15,6 @@ export class FileMeTaEntity {
   @Column({ name: 'size', type: 'integer', nullable: false })
   size: number
 
-  @ManyToMany(type => MailEntity, mail => mail.annexes)
-  mails: MailEntity[]
+  @ManyToMany(type => MailboxMailEntity, mail => mail.annexes)
+  mails: MailboxMailEntity[]
 }
