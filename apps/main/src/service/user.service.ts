@@ -10,4 +10,8 @@ export class UserService {
   selectUser(data: { id?: string, username?: string, password?: string }) {
     return this.userRepository.findOneBy(data)
   }
+
+  selectStaff(departmentId: string) {
+    return this.userRepository.createQueryBuilder().where('department_id = :departmentId', { departmentId }).getMany()
+  }
 }

@@ -1,10 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator'
 
-class MailboxUserReturnDto {
-  @ApiProperty()
-  id: string
-
+export class MailboxUserReturnDto {
   @ApiProperty()
   mailbox: string
 }
@@ -15,9 +12,6 @@ class MailboxFolderReturnDto {
 
   @ApiProperty()
   name: string
-
-  @ApiProperty()
-  isCommon: boolean
 }
 
 export class MailboxFoldersReturnDto {
@@ -26,6 +20,31 @@ export class MailboxFoldersReturnDto {
 
   @ApiProperty({ type: () => [MailboxFolderReturnDto] })
   folders: MailboxFolderReturnDto[]
+}
+
+class MailboxMailInListReturnDto {
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  date: string
+
+  @ApiProperty()
+  title: string
+
+  @ApiProperty()
+  senderMailbox: string
+
+  @ApiProperty()
+  recipientMailboxes: string[]
+}
+
+export class MailboxMailListReturnDto {
+  @ApiProperty({ type: () => MailboxFolderReturnDto })
+  folder: MailboxFolderReturnDto
+
+  @ApiProperty({ type: () => [MailboxMailInListReturnDto] })
+  list: MailboxMailInListReturnDto[]
 }
 
 export class MailboxSaveDraftDto {
@@ -70,27 +89,12 @@ class MailBoxMailFileMetaReturn {
   size: number
 }
 
-export class MailboxMailReturn {
+export class MailboxMailReturn extends MailboxMailInListReturnDto {
   @ApiProperty()
-  id: string
-
-  @ApiProperty()
-  date: string
-
-  @ApiProperty()
-  title: string
+  carbonCopies: string[]
 
   @ApiProperty()
   content: string
-
-  @ApiProperty()
-  senderMailbox: string
-
-  @ApiProperty()
-  recipientMailboxes: string[]
-
-  @ApiProperty()
-  carbonCopies: string[]
 
   @ApiProperty({ type: () => [MailBoxMailFileMetaReturn] })
   annexes: MailBoxMailFileMetaReturn[]

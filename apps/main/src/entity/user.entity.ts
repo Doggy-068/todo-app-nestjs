@@ -3,6 +3,7 @@ import { RoleEntity } from './role.entity'
 import { MessageEntity } from './message.entity'
 import { MailboxFolderEntity } from './mailbox.folder.entity'
 import { MailboxMailEntity } from './mailbox.mail.entity'
+import { DepartmentEntity } from './department.entity'
 
 @Entity({ name: 'USER' })
 export class UserEntity {
@@ -36,4 +37,8 @@ export class UserEntity {
 
   @OneToMany(type => MailboxMailEntity, mail => mail.user)
   mails: MailboxMailEntity[]
+
+  @ManyToOne(type => DepartmentEntity, department => department.staff)
+  @JoinColumn({ name: 'department_id', referencedColumnName: 'id' })
+  department: DepartmentEntity
 }

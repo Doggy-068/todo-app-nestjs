@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, Request } from '@nestjs/common'
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { UserService } from '../service/user.service'
 import { MailboxService } from '../service/mailbox.service'
-import { MailboxFoldersReturnDto, MailboxSaveDraftDto, MailboxMailReturn } from '../dto/mailbox.dto'
+import { MailboxFoldersReturnDto, MailboxSaveDraftDto, MailboxMailReturn, MailboxUserReturnDto, MailboxMailListReturnDto } from '../dto/mailbox.dto'
 import { FileService } from '../service/file.service'
 
 @ApiTags('Mailbox')
@@ -14,6 +14,21 @@ export class MailboxController {
     private mailboxService: MailboxService,
     private fileService: FileService
   ) { }
+
+  @ApiOperation({
+    summary: '获取邮箱'
+  })
+  @ApiOkResponse({
+    type: MailboxUserReturnDto
+  })
+  @Get('user')
+  async getMailbox(@Request() request): Promise<MailboxUserReturnDto> {
+    const userId = request['user'].id
+    const user = await this.userService.selectUser({ id: userId })
+    return {
+      mailbox: user.mailbox
+    }
+  }
 
   @ApiOperation({
     summary: '获取邮箱文件夹列表'
@@ -30,14 +45,60 @@ export class MailboxController {
     ])
     return {
       user: {
-        id: user.id,
         mailbox: user.mailbox
       },
       folders: folders.map(folder => ({
         id: folder.id,
-        name: folder.name,
-        isCommon: folder.isCommon
+        name: folder.name
       }))
+    }
+  }
+
+  @ApiOperation({
+    summary: '获取邮件列表'
+  })
+  @ApiOkResponse({
+    type: MailboxMailListReturnDto
+  })
+  @Get('mail/list')
+  async getMailList(@Request() request, @Query('mailbox') mailboxId: string): Promise<MailboxMailListReturnDto> {
+    const userId = request['user'].id
+    const mailboxFolder = await this.mailboxService.selectMailboxFolder(userId, mailboxId)
+    const mailList = await this.mailboxService.selectMails(userId, mailboxId)
+    return {
+      folder: {
+        id: mailboxFolder.id,
+        name: mailboxFolder.name
+      },
+      list: mailList.map(mail => ({
+        id: mail.id,
+        date: mail.date.toISOString(),
+        title: mail.title,
+        senderMailbox: mail.senderMailbox,
+        recipientMailboxes: mail.recipientMailboxes
+      }))
+    }
+  }
+
+  @ApiOperation({
+    summary: '获取邮件'
+  })
+  @ApiOkResponse({
+    type: MailboxMailReturn
+  })
+  @Get('mail')
+  async getMail(@Request() request, @Query('mail') mailId: string): Promise<MailboxMailReturn> {
+    const userId = request['user'].id
+    const mail = await this.mailboxService.selectMail(userId, mailId)
+    return {
+      id: mail.id,
+      date: mail.date.toISOString(),
+      title: mail.title,
+      senderMailbox: mail.senderMailbox,
+      recipientMailboxes: mail.recipientMailboxes,
+      carbonCopies: mail.carbonCopies,
+      content: mail.content,
+      annexes: mail.annexes
     }
   }
 

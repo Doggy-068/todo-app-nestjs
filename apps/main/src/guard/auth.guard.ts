@@ -4,6 +4,7 @@ import { jwtConstants } from '../constant/jwt.constant'
 import type { Request } from 'express'
 import { Reflector } from '@nestjs/core'
 import { IS_PUBLIC_KEY } from '../decorator/public.decorator'
+import { GqlExecutionContext } from '@nestjs/graphql'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -23,7 +24,7 @@ export class AuthGuard implements CanActivate {
       ]
     )
     if (isPublic) return true
-    const request = context.switchToHttp().getRequest()
+    const request = GqlExecutionContext.create(context).getContext().req
     const token = this.extractTokenFromHeader(request)
     try {
       const payload = await this.jwtService.verifyAsync(
